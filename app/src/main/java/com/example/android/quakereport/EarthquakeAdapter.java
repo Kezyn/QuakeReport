@@ -1,8 +1,6 @@
 package com.example.android.quakereport;
 
 import android.content.Context;
-import android.support.annotation.IdRes;
-import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -11,6 +9,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 
@@ -50,9 +50,30 @@ public class EarthquakeAdapter extends ArrayAdapter<Earthquake>{
         TextView location = convertView.findViewById(R.id.location);
         location.setText(current.getLocation());
 
-        TextView date = convertView.findViewById(R.id.date);
-        date.setText(current.getDate());
+        // Create a date object from the Unix time stamp
+        Date dateObject = new Date(current.getTimeInMilliseconds());
+
+        // Find the linearLayout that holds time and date inside the list item.
+        View timeContainer = convertView.findViewById(R.id.timecontainer);
+        // Format the date and write it in the TextView
+        TextView date = timeContainer.findViewById(R.id.date);
+        date.setText(formatDate(dateObject));
+        // Format the time and write it in the TextView
+        TextView time = timeContainer.findViewById(R.id.time);
+        time.setText(formatTime(dateObject));
 
         return convertView;
+    }
+
+    private String formatDate(Date dateObject) {
+        // We use the SimpleDateFormat class to convert the Unix time, to a human readable date.
+        SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMM yyyy");
+        return dateFormatter.format(dateObject);
+    }
+
+    private String formatTime(Date dateObject) {
+        // We use the SimpleDateFormat class to convert the Unix time, to human readable time.
+        SimpleDateFormat timeFormatter = new SimpleDateFormat("HH:mm");
+        return timeFormatter.format(dateObject);
     }
 }
