@@ -84,13 +84,11 @@ public class EarthquakeAdapter extends ArrayAdapter<Earthquake>{
         // Create a date object from the Unix time stamp
         Date dateObject = new Date(current.getTimeInMilliseconds());
 
-        // Find the linearLayout that holds time and date inside the list item.
-        View timeContainer = convertView.findViewById(R.id.timecontainer);
         // Format the date and write it in the TextView
-        TextView date = timeContainer.findViewById(R.id.date);
+        TextView date = convertView.findViewById(R.id.date);
         date.setText(formatDate(dateObject));
         // Format the time and write it in the TextView
-        TextView time = timeContainer.findViewById(R.id.time);
+        TextView time = convertView.findViewById(R.id.time);
         time.setText(formatTime(dateObject));
 
         return convertView;
