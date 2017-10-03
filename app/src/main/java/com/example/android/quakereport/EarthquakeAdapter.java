@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -20,6 +21,7 @@ import java.util.List;
 
 public class EarthquakeAdapter extends ArrayAdapter<Earthquake>{
 
+    private static final String LOCATION_SEPARATOR = " of ";
 
     public EarthquakeAdapter(@NonNull Context context, @NonNull List<Earthquake> objects) {
         // Don't need a layout resource id, since we inflate them manually in getView().
@@ -44,11 +46,24 @@ public class EarthquakeAdapter extends ArrayAdapter<Earthquake>{
         // find all the textViews within the convertView LinearLayout, and fill them
         // with the info of the current Earthquake object.
 
-        TextView magnitude = convertView.findViewById(R.id.magnitude);
-        magnitude.setText(current.getMagnitude() + "");
+        // Format the magnitude, so that it only shows one decimal place.
+        String formattedMagnitude = formatMagnitude(current.getMagnitude());
 
-        TextView location = convertView.findViewById(R.id.location);
-        location.setText(current.getLocation());
+        TextView magnitude = convertView.findViewById(R.id.magnitude);
+        magnitude.setText(formattedMagnitude);
+
+
+
+        // Split the original location into an offset and a primary location.
+        String [] formattedLocation = splitLocation(current.getLocation());
+
+        TextView primaryLocation = convertView.findViewById(R.id.primary_location);
+        primaryLocation.setText(formattedLocation[1]);
+
+        TextView locationOffset = convertView.findViewById(R.id.location_offset);
+        locationOffset.setText(formattedLocation[0]);
+
+
 
         // Create a date object from the Unix time stamp
         Date dateObject = new Date(current.getTimeInMilliseconds());
@@ -75,5 +90,20 @@ public class EarthquakeAdapter extends ArrayAdapter<Earthquake>{
         // We use the SimpleDateFormat class to convert the Unix time, to human readable time.
         SimpleDateFormat timeFormatter = new SimpleDateFormat("HH:mm");
         return timeFormatter.format(dateObject);
+    }
+
+    private String[] splitLocation(String location) {
+        if (location.contains(LOCATION_SEPARATOR)) {
+            String[] parts = location.split(LOCATION_SEPARATOR);
+            String locationOffset = parts[0] + LOCATION_SEPARATOR;
+            String primaryLocation = parts[1];
+            return new String [] {locationOffset.trim(), primaryLocation};
+        }
+        return new String[] {getContext().getString(R.string.near_the), location};
+    }
+
+    private String formatMagnitude(double magnitude) {
+        DecimalFormat formatter = new DecimalFormat("0.0");
+        return formatter.format(magnitude);
     }
 }

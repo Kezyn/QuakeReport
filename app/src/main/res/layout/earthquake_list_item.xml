@@ -13,11 +13,16 @@
         tools:text="11.1"
         android:layout_weight="1"/>
     <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="Near the"
+        android:id="@+id/location_offset"/>
+    <TextView
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:id="@+id/location"
+        android:id="@+id/primary_location"
         tools:text="Weiterstadt"
-        android:layout_weight="1"/>
+        android:layout_weight="1" />
 
     <LinearLayout
         android:layout_height="wrap_content"
