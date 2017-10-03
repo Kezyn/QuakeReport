@@ -7,11 +7,16 @@
     android:padding="16dp">
 
     <TextView
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
         android:id="@+id/magnitude"
-        tools:text="11.1"
-        android:layout_weight="1"/>
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_gravity="center_vertical"
+        android:background="@drawable/magnitude_circle"
+        android:fontFamily="sans-serif-medium"
+        android:gravity="center"
+        android:textColor="@android:color/white"
+        android:textSize="16sp"
+        tools:text="8.9" />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
