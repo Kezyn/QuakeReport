@@ -6,7 +6,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.URL;
 import java.util.ArrayList;
+
+import static com.example.android.quakereport.R.id.date;
 
 /**
  * Helper methods related to requesting and receiving earthquake data from USGS.
@@ -49,17 +52,29 @@ public final class QueryUtils {
 
             // Parse the response given by the SAMPLE_JSON_RESPONSE string and
             // build up a list of Earthquake objects with the corresponding data.
+
+            // Create a new JSONObject, from the JSON String above.
             JSONObject root = new JSONObject(SAMPLE_JSON_RESPONSE);
+            // Find the JSONArray "features" inside the JSONObject.
             JSONArray earthquakeArray = root.getJSONArray("features");
 
             for (int i = 0; i < earthquakeArray.length(); i++) {
+                // Get the next element inside the JSONArray
                 JSONObject currentEarthquake = earthquakeArray.getJSONObject(i);
+                // Find its "properties" object.
                 JSONObject properties = currentEarthquake.getJSONObject("properties");
-                Double magnitude = properties.getDouble("mag");
-                String location = properties.getString("place");
-                long date = properties.getLong("time");
 
-                earthquakes.add(new Earthquake(magnitude, location, date));
+                //Extract the value for the key called "mag"
+                Double magnitude = properties.getDouble("mag");
+                //Extract the value for the key called "place"
+                String location = properties.getString("place");
+                //Extract the value for the key called "time"
+                long time = properties.getLong("time");
+                //Extract the value for the key called "url"
+                String url = properties.getString("url");
+
+                // Create a new Earthquake object from the extracted data.
+                earthquakes.add(new Earthquake(magnitude, location, time, url));
             }
 
 
